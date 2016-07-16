@@ -1,9 +1,13 @@
 import pymysql
-import dbconfig
+import os
+
+# SET your api keys as env vars
+DB_USER =  os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
 
 connection = pymysql.connect(host='localhost',
-                             user=dbconfig.db_user,
-                             passwd=dbconfig.db_password)
+                             user=DB_USER,
+                             passwd=DB_PASSWORD)
 try:
         with connection.cursor() as cursor:
                 sql = "CREATE DATABASE IF NOT EXISTS crimemap"
