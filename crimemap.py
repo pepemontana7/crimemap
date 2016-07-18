@@ -1,14 +1,13 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+import json
 import os
+
 TEST = os.environ.get('TEST_CRIMEAPP')
-print TEST
 if TEST == True:
-    print "in mock"
     from mockdbhelper import MockDBHelper as DBHelper
 else:
-    print "using real db"
     from dbhelper import DBHelper
 
 app = Flask(__name__)
@@ -16,12 +15,8 @@ DB = DBHelper()
 
 @app.route("/")
 def home():
-    try:
-        data = DB.get_all_inputs()
-    except Exception as e:
-        print e
-        data = None
-    return render_template("home.html", data=data)
+    crimes = json.dumps(DB.get_all_crimes())
+    return render_template("home.html", crimes=crimes)
 
 @app.route("/add", methods=["POST"])
 def add():
